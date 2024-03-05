@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef void Return;
+typedef void ThreadRet;
 struct ThreadArgs;
 
 struct pool_queue {
@@ -13,7 +13,7 @@ struct pool_queue {
 
 struct pool {
 	char cancelled;
-	Return (*fn)(struct ThreadArgs *);
+	ThreadRet (*fn)(struct ThreadArgs *);
 	unsigned int remaining;
 	unsigned int nthreads;
 	struct pool_queue *q;
@@ -23,9 +23,9 @@ struct pool {
 	pthread_t threads[1];
 };
 
-static Return* thread(struct ThreadArgs *args);
+static ThreadRet* thread(struct ThreadArgs *args);
 
-struct pool* pool_create(Return (*thread_func)(struct ThreadArgs *), unsigned int threads) {
+struct pool* pool_create(ThreadRet (*thread_func)(struct ThreadArgs *), unsigned int threads) {
 	struct pool* p = (struct pool *) malloc(sizeof(struct pool) + (threads-1) * sizeof(pthread_t));
 
 	pthread_mutex_init(&p->q_mtx, NULL);
@@ -91,7 +91,7 @@ void pool_end(struct pool* pool) {
 	free(pool);
 }
 
-static Return* thread(struct ThreadArgs *args) {
+static ThreadRet* thread(struct ThreadArgs *args) {
 	struct pool_queue *q;
 	struct pool *p = (struct pool *) args;
 
@@ -124,7 +124,7 @@ static Return* thread(struct ThreadArgs *args) {
 	return NULL;
 }
 
-typedef void Return;
+typedef void ThreadRet;
 
 typedef struct ThreadArgs {
     int n;
