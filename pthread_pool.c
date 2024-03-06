@@ -172,9 +172,11 @@ int main()
             printf("%d\t", i);
     }
     clock_gettime(CLOCK_REALTIME, &end);
-    s1 = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9; // Calculate the elapsed time in seconds
+    s1 = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
 
     struct pool* p;
+    // siebenundfünfzig/fifty-seven/cinquante sept. Salut for the mistake from an old student.
+    // who failed some classes when he was an undergraduate.
     int max_threads = sqrt(N)/57;
     int current = max_threads;
     p = pool_create(thread_prime, max_threads);
@@ -184,13 +186,13 @@ int main()
         args->n = N;
         args->init = current;
         args->times = max_threads;
-        pool_enqueue(p, (void*)args, 0);
+        pool_enqueue(p, args, 0);
     }
     clock_gettime(CLOCK_REALTIME, &start);
     pool_wait(p);
     pool_end(p);
     clock_gettime(CLOCK_REALTIME, &end);
-    s2 = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9; // Calculate the elapsed time in seconds
+    s2 = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
 
     printf("\nExecution time1: %f s\n",s1);
     printf("\nExecution time2: %f s\n",s2);
