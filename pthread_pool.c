@@ -68,8 +68,6 @@ void pool_wait(struct pool* pool) {
 }
 
 void pool_end(struct pool* pool) {
-	struct pool_queue *q;
-
 	pool->cancelled = 1;
 
 	pthread_mutex_lock(&pool->q_mtx);
@@ -80,6 +78,7 @@ void pool_end(struct pool* pool) {
 		pthread_join(pool->threads[i], NULL);
 	}
 
+    struct pool_queue *q;
 	while (pool->q != NULL) {
 		q = pool->q;
 		pool->q = q->next;
@@ -92,8 +91,8 @@ void pool_end(struct pool* pool) {
 }
 
 static ThreadRet* thread(struct ThreadArgs *args) {
-	struct pool_queue *q;
 	struct pool *p = (struct pool *) args;
+    struct pool_queue *q;
 
 	while (!p->cancelled) {
 		pthread_mutex_lock(&p->q_mtx);
