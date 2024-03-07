@@ -94,7 +94,7 @@ void pool_end(struct pool* pool) {
     free(pool);
 }
 
-static ThreadRet* thread(struct ThreadArgs *args)
+ThreadRet* thread(struct ThreadArgs *args)
 {
     struct pool *p = (struct pool *) args;
     struct pool_queue *q;
