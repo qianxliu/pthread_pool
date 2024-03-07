@@ -25,7 +25,7 @@ struct pool
     pthread_t threads[1];
 };
 
-static ThreadRet* thread(struct ThreadArgs *args);
+ThreadRet* thread(struct ThreadArgs *args);
 
 struct pool* pool_create(ThreadRet (*thread_func)(struct ThreadArgs *), unsigned int threads) {
     struct pool* p = (struct pool *) malloc(sizeof(struct pool) + (threads-1) * sizeof(pthread_t));
