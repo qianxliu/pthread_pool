@@ -39,7 +39,7 @@ struct pool* pool_create(ThreadRet (*thread_func)(struct ThreadArgs *), unsigned
     p->end = NULL;
     p->q = NULL;
 
-    for (int i = 0; i < threads; ++i) {
+    for (int i = 0; i < p->nthreads; ++i) {
         pthread_create(&p->threads[i], NULL, (void *)&thread, p);
     }
 
